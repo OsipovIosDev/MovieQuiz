@@ -1,10 +1,8 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController {
-
     
-// структуры
-    
+    // структуры
     
     private struct QuizQuestion {
         let image: String               // название изображения фильма
@@ -23,22 +21,19 @@ final class MovieQuizViewController: UIViewController {
         let question: String            // текущий вопрос викторины
         let questionNumber: String      // порядковый номер вопроса викторины (1-10)
     }
-   
     
-// аутлеты
+    // аутлеты
     
     @IBOutlet private var counterLabel: UILabel!
+    @IBOutlet private var questionTitleLabel: UILabel!
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var textLabel: UILabel!
     @IBOutlet private var noButton: UIButton!
     @IBOutlet private var yesButton: UIButton!
     
-    
-// свойства
+    // свойства
     
     // массив вопросов викторины
-    
-    
     private let questions: [QuizQuestion] = [
         QuizQuestion(image: "Deadpool",
                      text: "Рейтинг этого фильма больше чем 6?",
@@ -75,19 +70,28 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex = 0            // текущий вопрос
     private var correctAnswer = 0                   // счетчик правильных ответов
     
-    
-    
-// жизненный цикл вьюконтроллера
+    // жизненный цикл вьюконтроллера
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupFonts()
         show(quiz: convert(model: questions[currentQuestionIndex]))
     }
     
-    
+    private func setupFonts() {
+        if let boldFont = UIFont (name: "YSDisplay-Bold", size: 23) {
+            textLabel.font = boldFont
+        }
+        
+        if let mediumFont = UIFont (name: "YSDisplay-Medium", size: 20) {
+            questionTitleLabel.font = mediumFont
+            counterLabel.font = mediumFont
+            yesButton.titleLabel?.font = mediumFont
+            noButton.titleLabel?.font = mediumFont
+        }
+    }
     
 // IBActions
-    
     // обработка ответов
     
     @IBAction private func yesButtonClicker(_ sender: Any) {
@@ -100,11 +104,8 @@ final class MovieQuizViewController: UIViewController {
         let givenAnswer = false
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
-    
 
-    
 // методы
-    
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(
@@ -173,7 +174,6 @@ final class MovieQuizViewController: UIViewController {
         }
     }
     
-    
 // управление состоянием кнопок (блокировка от спама по кнопкам)
     
     private func setButtonsEnabled(_ isEnabled: Bool) {
@@ -181,5 +181,3 @@ final class MovieQuizViewController: UIViewController {
         yesButton.isEnabled = isEnabled
     }
 }
-
-
